@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
                        "   -e     Fact file\n"
                        "   -q     Query [If flag is not present and -map is not present, begins interactive mode]\n"
                        "   -o     (Optional) Output file\n   -map   (Optional) Print MAP relations and classes\n");
-        return -1;
+        return 1;
     }
     for (a = 1; a < argc; a++) {
         if (strcmp(argv[a], "-i") == 0) {
@@ -51,11 +51,11 @@ int main(int argc, char *argv[]) {
                                "   -i     Rule file\n   -e     Fact file\n"
                                "   -q     Query [If flag is not present and -map is not present, begins interactive mode]\n"
                                "   -o     (Optional) Output file\n   -map   (Optional) Print MAP relations and classes\n");
-                return -1;
+                return 1;
             }
             if (rulesIdx != -1) {
                 printf("Incorrect arguments to Alchemy Lite. Please specify only one rule file.\n");
-                return -1;
+                return 1;
             }
             rulesIdx = ++a;
         } else if (strcmp(argv[a], "-e") == 0) {
@@ -66,11 +66,11 @@ int main(int argc, char *argv[]) {
                                "   -q     Query [If flag is not present and -map is not present, begins interactive mode]\n"
                                "   -o     (Optional) Output file\n"
                                "   -map   (Optional) Print MAP relations and classes\n");
-                return -1;
+                return 1;
             }
             if (evidIdx != -1) {
                 printf("Incorrect arguments to Alchemy Lite. Please specify only one fact file.\n");
-                return -1;
+                return 1;
             }
             evidIdx = ++a;
         } else if (strcmp(argv[a], "-q") == 0) {
@@ -80,13 +80,13 @@ int main(int argc, char *argv[]) {
                                "   -q     Query [If flag is not present and -map is not present, begins interactive mode]\n"
                                "   -o     (Optional) Output file\n"
                                "   -map   (Optional) Print MAP relations and classes\n");
-                return -1;
+                return 1;
             }
             if (queryIdx != -1) {
                 printf("Incorrect arguments to Alchemy Lite. Please specify only one query. "
                                "If more than one query is desired, please use interactive mode "
                                "(by not specifying a query on the command line.\n");
-                return -1;
+                return 1;
             }
             queryIdx = ++a;
         } else if (strcmp(argv[a], "-o") == 0) {
@@ -97,11 +97,11 @@ int main(int argc, char *argv[]) {
                                "   -q     Query [If flag is not present and -map is not present, begins interactive mode]\n"
                                "   -o     (Optional) Output file\n"
                                "   -map   (Optional) Print MAP relations and classes\n");
-                return -1;
+                return 1;
             }
             if (outputIdx != -1) {
                 printf("Incorrect arguments to Alchemy Lite. Please specify at most one output file.\n");
-                return -1;
+                return 1;
             }
             outputIdx = ++a;
         } else if (strcmp(argv[a], "-map") == 0) {
@@ -113,12 +113,12 @@ int main(int argc, char *argv[]) {
                            "   -q     Query [If flag is not present and -map is not present, begins interactive mode]\n"
                            "   -o     (Optional) Output file\n"
                            "   -map   (Optional) Print MAP relations and classes\n");
-            return -1;
+            return 1;
         }
     }
     if (queryIdx != -1 && map == 1) {
         printf("Please use either a query or MAP inference.\n");
-        return -1;
+        return 1;
     }
     snprintf(add_fmt_str, 50, "%%%d[^\r\n?)] %%1[)] %%1s", MAX_LINE_LENGTH);
     readInTMLRules(kb, argv[rulesIdx]);
