@@ -85,14 +85,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define _PREVASGN(elt,list,to) { char **_alias = (char**)&((list)->prev); *_alias=(char*)(to); }
 #define _RS(list) { char **_alias = (char**)&(list); *_alias=_tmp; }
 #define _CASTASGN(a,b) { char **_alias = (char**)&(a); *_alias=(char*)(b); }
-#else 
-#define _SV(elt,list)
-#define _NEXT(elt,list) ((elt)->next)
-#define _NEXTASGN(elt,list,to) ((elt)->next)=(to)
-#define _PREV(elt,list) ((elt)->prev)
-#define _PREVASGN(elt,list,to) ((elt)->prev)=(to)
+#else
+#define _SV(elt, list)
+#define _NEXT(elt, list) ((elt)->next)
+#define _NEXTASGN(elt, list, to) ((elt)->next)=(to)
+#define _PREV(elt, list) ((elt)->prev)
+#define _PREVASGN(elt, list, to) ((elt)->prev)=(to)
 #define _RS(list)
-#define _CASTASGN(a,b) (a)=(b)
+#define _CASTASGN(a, b) (a)=(b)
 #endif
 
 /******************************************************************************
@@ -286,13 +286,13 @@ do {                                                                            
 /******************************************************************************
  * singly linked list macros (non-circular)                                   *
  *****************************************************************************/
-#define LL_PREPEND(head,add)                                                                   \
+#define LL_PREPEND(head, add)                                                                   \
 do {                                                                                           \
   (add)->next = head;                                                                          \
   head = add;                                                                                  \
 } while (0)
 
-#define LL_CONCAT(head1,head2)                                                                 \
+#define LL_CONCAT(head1, head2)                                                                 \
 do {                                                                                           \
   LDECLTYPE(head1) _tmp;                                                                       \
   if (head1) {                                                                                 \
@@ -304,7 +304,7 @@ do {                                                                            
   }                                                                                            \
 } while (0)
 
-#define LL_APPEND(head,add)                                                                    \
+#define LL_APPEND(head, add)                                                                    \
 do {                                                                                           \
   LDECLTYPE(head) _tmp;                                                                        \
   (add)->next=NULL;                                                                            \
@@ -317,7 +317,7 @@ do {                                                                            
   }                                                                                            \
 } while (0)
 
-#define LL_DELETE(head,del)                                                                    \
+#define LL_DELETE(head, del)                                                                    \
 do {                                                                                           \
   LDECLTYPE(head) _tmp;                                                                        \
   if ((head) == (del)) {                                                                       \
@@ -334,7 +334,7 @@ do {                                                                            
 } while (0)
 
 /* Here are VS2008 replacements for LL_APPEND and LL_DELETE */
-#define LL_APPEND_VS2008(head,add)                                                             \
+#define LL_APPEND_VS2008(head, add)                                                             \
 do {                                                                                           \
   if (head) {                                                                                  \
     (add)->next = head;     /* use add->next as a temp variable */                             \
@@ -346,7 +346,7 @@ do {                                                                            
   (add)->next=NULL;                                                                            \
 } while (0)
 
-#define LL_DELETE_VS2008(head,del)                                                             \
+#define LL_DELETE_VS2008(head, del)                                                             \
 do {                                                                                           \
   if ((head) == (del)) {                                                                       \
     (head)=(head)->next;                                                                       \
@@ -374,30 +374,30 @@ do {                                                                            
 #endif
 /* end VS2008 replacements */
 
-#define LL_FOREACH(head,el)                                                                    \
+#define LL_FOREACH(head, el)                                                                    \
     for(el=head;el;el=(el)->next)
 
-#define LL_FOREACH_SAFE(head,el,tmp)                                                           \
+#define LL_FOREACH_SAFE(head, el, tmp)                                                           \
   for((el)=(head);(el) && (tmp = (el)->next, 1); (el) = tmp)
 
-#define LL_SEARCH_SCALAR(head,out,field,val)                                                   \
+#define LL_SEARCH_SCALAR(head, out, field, val)                                                   \
 do {                                                                                           \
     LL_FOREACH(head,out) {                                                                     \
       if ((out)->field == (val)) break;                                                        \
     }                                                                                          \
-} while(0) 
+} while(0)
 
-#define LL_SEARCH(head,out,elt,cmp)                                                            \
+#define LL_SEARCH(head, out, elt, cmp)                                                            \
 do {                                                                                           \
     LL_FOREACH(head,out) {                                                                     \
       if ((cmp(out,elt))==0) break;                                                            \
     }                                                                                          \
-} while(0) 
+} while(0)
 
 /******************************************************************************
  * doubly linked list macros (non-circular)                                   *
  *****************************************************************************/
-#define DL_PREPEND(head,add)                                                                   \
+#define DL_PREPEND(head, add)                                                                   \
 do {                                                                                           \
  (add)->next = head;                                                                           \
  if (head) {                                                                                   \
@@ -409,7 +409,7 @@ do {                                                                            
  (head) = (add);                                                                               \
 } while (0)
 
-#define DL_APPEND(head,add)                                                                    \
+#define DL_APPEND(head, add)                                                                    \
 do {                                                                                           \
   if (head) {                                                                                  \
       (add)->prev = (head)->prev;                                                              \
@@ -421,9 +421,9 @@ do {                                                                            
       (head)->prev = (head);                                                                   \
       (head)->next = NULL;                                                                     \
   }                                                                                            \
-} while (0) 
+} while (0)
 
-#define DL_CONCAT(head1,head2)                                                                 \
+#define DL_CONCAT(head1, head2)                                                                 \
 do {                                                                                           \
   LDECLTYPE(head1) _tmp;                                                                       \
   if (head2) {                                                                                 \
@@ -436,9 +436,9 @@ do {                                                                            
         (head1)=(head2);                                                                       \
     }                                                                                          \
   }                                                                                            \
-} while (0) 
+} while (0)
 
-#define DL_DELETE(head,del)                                                                    \
+#define DL_DELETE(head, del)                                                                    \
 do {                                                                                           \
   assert((del)->prev != NULL);                                                                 \
   if ((del)->prev == (del)) {                                                                  \
@@ -454,14 +454,14 @@ do {                                                                            
           (head)->prev = (del)->prev;                                                          \
       }                                                                                        \
   }                                                                                            \
-} while (0) 
+} while (0)
 
 
-#define DL_FOREACH(head,el)                                                                    \
+#define DL_FOREACH(head, el)                                                                    \
     for(el=head;el;el=(el)->next)
 
 /* this version is safe for deleting the elements during iteration */
-#define DL_FOREACH_SAFE(head,el,tmp)                                                           \
+#define DL_FOREACH_SAFE(head, el, tmp)                                                           \
   for((el)=(head);(el) && (tmp = (el)->next, 1); (el) = tmp)
 
 /* these are identical to their singly-linked list counterparts */
@@ -471,7 +471,7 @@ do {                                                                            
 /******************************************************************************
  * circular doubly linked list macros                                         *
  *****************************************************************************/
-#define CDL_PREPEND(head,add)                                                                  \
+#define CDL_PREPEND(head, add)                                                                  \
 do {                                                                                           \
  if (head) {                                                                                   \
    (add)->prev = (head)->prev;                                                                 \
@@ -485,7 +485,7 @@ do {                                                                            
 (head)=(add);                                                                                  \
 } while (0)
 
-#define CDL_DELETE(head,del)                                                                   \
+#define CDL_DELETE(head, del)                                                                   \
 do {                                                                                           \
   if ( ((head)==(del)) && ((head)->next == (head))) {                                          \
       (head) = 0L;                                                                             \
@@ -494,29 +494,29 @@ do {                                                                            
      (del)->prev->next = (del)->next;                                                          \
      if ((del) == (head)) (head)=(del)->next;                                                  \
   }                                                                                            \
-} while (0) 
+} while (0)
 
-#define CDL_FOREACH(head,el)                                                                   \
-    for(el=head;el;el=((el)->next==head ? 0L : (el)->next)) 
+#define CDL_FOREACH(head, el)                                                                   \
+    for(el=head;el;el=((el)->next==head ? 0L : (el)->next))
 
-#define CDL_FOREACH_SAFE(head,el,tmp1,tmp2)                                                    \
+#define CDL_FOREACH_SAFE(head, el, tmp1, tmp2)                                                    \
   for((el)=(head), ((tmp1)=(head)?((head)->prev):NULL);                                        \
       (el) && ((tmp2)=(el)->next, 1);                                                          \
       ((el) = (((el)==(tmp1)) ? 0L : (tmp2))))
 
-#define CDL_SEARCH_SCALAR(head,out,field,val)                                                  \
+#define CDL_SEARCH_SCALAR(head, out, field, val)                                                  \
 do {                                                                                           \
     CDL_FOREACH(head,out) {                                                                    \
       if ((out)->field == (val)) break;                                                        \
     }                                                                                          \
-} while(0) 
+} while(0)
 
-#define CDL_SEARCH(head,out,elt,cmp)                                                           \
+#define CDL_SEARCH(head, out, elt, cmp)                                                           \
 do {                                                                                           \
     CDL_FOREACH(head,out) {                                                                    \
       if ((cmp(out,elt))==0) break;                                                            \
     }                                                                                          \
-} while(0) 
+} while(0)
 
 #endif /* UTLIST_H */
 

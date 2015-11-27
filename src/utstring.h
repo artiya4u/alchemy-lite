@@ -30,7 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define UTSTRING_VERSION 1.9.6
 
 #ifdef __GNUC__
-#define _UNUSED_ __attribute__ ((__unused__)) 
+#define _UNUSED_ __attribute__ ((__unused__))
 #else
 #define _UNUSED_ 
 #endif
@@ -38,15 +38,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <stdio.h>
+
 #define oom() exit(-1)
 
 typedef struct {
     char *d;
-    size_t n; /* allocd size */
+    size_t n;
+    /* allocd size */
     size_t i; /* index of first unused byte */
 } UT_string;
 
-#define utstring_reserve(s,amt)                            \
+#define utstring_reserve(s, amt)                            \
 do {                                                       \
   if (((s)->n - (s)->i) < (size_t)(amt)) {                 \
      (s)->d = (char*)realloc((s)->d, (s)->n + amt);        \
@@ -96,7 +99,7 @@ do {                                                       \
   (s)->d[0] = '\0';                                        \
 } while(0)
 
-#define utstring_bincpy(s,b,l)                             \
+#define utstring_bincpy(s, b, l)                             \
 do {                                                       \
   utstring_reserve((s),(l)+1);                               \
   if (l) memcpy(&(s)->d[(s)->i], b, l);                    \
@@ -104,7 +107,7 @@ do {                                                       \
   (s)->d[(s)->i]='\0';                                         \
 } while(0)
 
-#define utstring_concat(dst,src)                                 \
+#define utstring_concat(dst, src)                                 \
 do {                                                             \
   utstring_reserve((dst),((src)->i)+1);                          \
   if ((src)->i) memcpy(&(dst)->d[(dst)->i], (src)->d, (src)->i); \
@@ -117,32 +120,34 @@ do {                                                             \
 #define utstring_body(s) ((s)->d)
 
 _UNUSED_ static void utstring_printf_va(UT_string *s, const char *fmt, va_list ap) {
-   int n;
-   va_list cp;
-   while (1) {
+    int n;
+    va_list cp;
+    while (1) {
 #ifdef _WIN32
-      cp = ap;
+        cp = ap;
 #else
-      va_copy(cp, ap);
+        va_copy(cp, ap);
 #endif
-      n = vsnprintf (&s->d[s->i], s->n-s->i, fmt, cp);
-      va_end(cp);
+        n = vsnprintf(&s->d[s->i], s->n - s->i, fmt, cp);
+        va_end(cp);
 
-      if ((n > -1) && (n < (int)(s->n-s->i))) {
-        s->i += n;
-        return;
-      }
+        if ((n > -1) && (n < (int) (s->n - s->i))) {
+            s->i += n;
+            return;
+        }
 
-      /* Else try again with more space. */
-      if (n > -1) utstring_reserve(s,n+1); /* exact */
-      else utstring_reserve(s,(s->n)*2);   /* 2x */
-   }
+        /* Else try again with more space. */
+        if (n > -1) utstring_reserve(s, n + 1); /* exact */
+        else
+            utstring_reserve(s, (s->n) * 2);   /* 2x */
+    }
 }
+
 _UNUSED_ static void utstring_printf(UT_string *s, const char *fmt, ...) {
-   va_list ap;
-   va_start(ap,fmt);
-   utstring_printf_va(s,fmt,ap);
-   va_end(ap);
+    va_list ap;
+    va_start(ap, fmt);
+    utstring_printf_va(s, fmt, ap);
+    va_end(ap);
 }
 
 #endif /* UTSTRING_H */

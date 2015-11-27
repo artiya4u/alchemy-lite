@@ -28,10 +28,9 @@
 #define PQUEUE_H
 
 struct balance_pri {
-   double wt;
-   int high_rank;
+    double wt;
+    int high_rank;
 };
-
 
 
 /** priority data type */
@@ -40,12 +39,15 @@ typedef double pqueue_pri_t;
 
 /** callback functions to get/set/compare the priority of an element */
 typedef pqueue_pri_t (*pqueue_get_pri_f)(void *a);
+
 typedef void (*pqueue_set_pri_f)(void *a, pqueue_pri_t pri);
+
 typedef int (*pqueue_cmp_pri_f)(pqueue_pri_t next, pqueue_pri_t curr);
 
 
 /** callback functions to get/set the position of an element */
 typedef size_t (*pqueue_get_pos_f)(void *a);
+
 typedef void (*pqueue_set_pos_f)(void *a, size_t pos);
 
 
@@ -54,8 +56,7 @@ typedef void (*pqueue_print_entry_f)(FILE *out, void *a);
 
 
 /** the priority queue handle */
-typedef struct pqueue_t
-{
+typedef struct pqueue_t {
     size_t size;
     size_t avail;
     size_t step;
@@ -80,12 +81,12 @@ typedef struct pqueue_t
  * @Return the handle or NULL for insufficent memory
  */
 pqueue_t *
-pqueue_init(size_t n,
-            pqueue_cmp_pri_f cmppri,
-            pqueue_get_pri_f getpri,
-            pqueue_set_pri_f setpri,
-            pqueue_get_pos_f getpos,
-            pqueue_set_pos_f setpos);
+        pqueue_init(size_t n,
+                    pqueue_cmp_pri_f cmppri,
+                    pqueue_get_pri_f getpri,
+                    pqueue_set_pri_f setpri,
+                    pqueue_get_pos_f getpos,
+                    pqueue_set_pos_f setpos);
 
 
 /**
@@ -118,9 +119,9 @@ int pqueue_insert(pqueue_t *q, void *d);
  * @param d the entry
  */
 void
-pqueue_change_priority(pqueue_t *q,
-                       pqueue_pri_t new_pri,
-                       void *d);
+        pqueue_change_priority(pqueue_t *q,
+                               pqueue_pri_t new_pri,
+                               void *d);
 
 
 /**
@@ -159,9 +160,9 @@ void *pqueue_peek(pqueue_t *q);
  * @param the callback function to print the entry
  */
 void
-pqueue_print(pqueue_t *q, 
-             FILE *out, 
-             pqueue_print_entry_f print);
+        pqueue_print(pqueue_t *q,
+                     FILE *out,
+                     pqueue_print_entry_f print);
 
 
 /**
@@ -173,9 +174,9 @@ pqueue_print(pqueue_t *q,
  * @param the callback function to print the entry
  */
 void
-pqueueu_dump(pqueue_t *q, 
-             FILE *out,
-             pqueue_print_entry_f print);
+        pqueueu_dump(pqueue_t *q,
+                     FILE *out,
+                     pqueue_print_entry_f print);
 
 
 /**
